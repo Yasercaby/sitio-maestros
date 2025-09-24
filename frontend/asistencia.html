@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pase de Lista</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="dashboard.html" class="button">Volver al Dashboard</a>
+            <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
+        </header>
+        <section id="asistencia-card">
+            <h1 id="nombre-grupo"></h1>
+            <h2 id="fecha-actual"></h2>
+            <form id="asistenciaForm">
+                <div id="alumnos-lista-asistencia">
+                    </div>
+                <button type="submit" class="button">Guardar Asistencia</button>
+            </form>
+            <p id="mensaje-asistencia" class="mensaje"></p>
+        </section>
+    </div>
+    <script src="asistencia.js" type="module"></script>
+</body>
+</html>

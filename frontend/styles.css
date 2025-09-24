@@ -1,0 +1,167 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F1FAEE; /* Fondo muy claro y relajante */
+    color: #333; /* Texto oscuro para buena legibilidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #1D3557; /* Un azul marino profundo y profesional */
+    margin: 0;
+    font-size: 2rem;
+}
+
+.button, a.button {
+    background-color: #457B9D; /* Un azul teal vibrante para los botones */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.button:hover, a.button:hover {
+    background-color: #2A486B; /* Azul un poco más oscuro al pasar el cursor */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.forms-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.form-card {
+    background: #FFFFFF;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    flex: 1;
+    min-width: 300px;
+    border-top: 5px solid #457B9D;
+}
+
+.form-card h2 {
+    color: #1D3557;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.grupos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.grupo-card {
+    background: #FFFFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-top: 5px solid #E63946; /* Rojo para un toque de color */
+}
+
+.grupo-card h2 {
+    color: #1D3557;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.grupo-card p {
+    color: #666;
+    margin: 0;
+}
+
+.acciones-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alumnos-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alumnos-lista li {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 3px solid #E63946;
+}
+
+.mensaje {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.mensaje.green {
+    color: #2D6A4F;
+}
+
+.mensaje.red {
+    color: #E63946;
+}
+
+a#cerrarSesion.button {
+    background-color: #E63946;
+}
+a#cerrarSesion.button:hover {
+    background-color: #D62839;
+}
+
+.alumnos-ocultos {
+    display: none;
+}

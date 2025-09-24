@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Asistencia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="dashboard.html" class="button">Volver al Dashboard</a>
+            <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
+        </header>
+
+        <section id="historial-container">
+            <h1 id="nombre-grupo-historial"></h1>
+            <div class="header-acciones">
+                <button id="descargar-reporte-btn" class="button">Descargar Reporte</button>
+            </div>
+            <div id="historial-tabla">
+                </div>
+            <p id="mensaje-historial" class="mensaje"></p>
+        </section>
+    </div>
+
+    <script src="historial.js" type="module"></script>
+</body>
+</html>
