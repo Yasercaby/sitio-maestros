@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/dashboard" class="button">Volver al Dashboard</a>
+            <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
+        </header>
+
+        <section id="calificaciones-container">
+            <h1 id="nombre-grupo-calificaciones">Cargando...</h1>
+            <p>Ingresa las calificaciones de cada unidad para los alumnos. Para calcular el promedio total, haz clic en el botón.</p>
+            
+            <div id="unidades-input">
+                <label for="numero-unidades">Número de unidades:</label>
+                <input type="number" id="numero-unidades" min="1">
+                <button type="button" id="generar-unidades-btn" class="button">Generar Unidades</button>
+            </div>
+            
+            <form id="formulario-calificaciones">
+                <div id="alumnos-calificaciones">
+                    <!-- El JavaScript llenará esta sección -->
+                </div>
+                <div class="calificaciones-acciones">
+                    <button type="submit" class="button">Guardar Calificaciones</button>
+                    <button type="button" id="calcular-promedio-btn" class="button">Calcular Promedio Final</button>
+                </div>
+            </form>
+            
+            <div id="promedio-final-resultados">
+                <!-- Aquí se mostrarán los promedios -->
+            </div>
+
+            <p id="mensaje-calificaciones" class="mensaje"></p>
+        </section>
+    </div>
+
+    <!-- Script sin 'type="module"' para máxima compatibilidad -->
+    <script src="js/calificaciones.js"></script>
+</body>
+</html>
