@@ -1,22 +1,20 @@
-# Usa la imagen oficial de Node.js como base. Esto incluye Node y npm.
-FROM node:18
+# 1. Usar una imagen oficial de Node.js (versión 18 o la que uses)
+FROM node:18-alpine AS builder
 
-# Establece el directorio de trabajo dentro del contenedor
-WORKDIR /usr/src/app
+# 2. Establecer el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-# Copia los archivos package.json y package-lock.json al directorio de trabajo
-# Esto permite que Docker use el caché para las dependencias, haciéndolo más rápido
-COPY package*.json ./
+# 3. Copiar los archivos de definición de dependencias
+COPY package.json package-lock.json ./
 
-# Instala todas las dependencias del proyecto
-RUN npm install
+# 4. Instalar las dependencias de producción
+RUN npm ci --only=production
 
-# Copia todo el código fuente del proyecto al contenedor
+# 5. Copiar TODO el resto del código de tu proyecto
 COPY . .
 
-# Expone el puerto que usará la aplicación.
-# En tu caso, es el puerto 3000 (o el que uses en tu archivo server.js)
+# 6. Exponer el puerto que tu app usa internamente (aunque Render lo mapea)
 EXPOSE 3000
 
-# El comando para iniciar la aplicación cuando se ejecute el contenedor
-CMD [ "node", "backend/server.js" ]
+# 7. El comando para arrancar tu aplicación
+CMD ["node", "CONTROLADOR/server.js"]
