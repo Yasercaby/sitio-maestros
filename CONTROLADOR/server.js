@@ -7,7 +7,7 @@ const path = require('path');
 const { Worker } = require('worker_threads');
 
 // Importar como dbPool para ser extra explícitos
-const dbPool = require('../MODELO/db.js');
+const db = require('../MODELO/db.js'); // Importar el objeto exportado
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -33,21 +33,21 @@ app.post('/api/registro', async (req, res) => {
         console.log("--- DEBUG REGISTRO ---");
         console.log("Intentando registrar:", { nombre, email });
         console.log("Tipo de dbPool:", typeof dbPool);
-        console.log("Tiene dbPool el método query?", typeof dbPool.query === 'function');
+        console.log("Tiene dbPool el método query?", typeof db.pool.query === 'function');
         // --- FIN ESPÍA ---
 
         const hash = await bcrypt.hash(contrasena, 10);
         const sql = 'INSERT INTO maestros (nombre, email, contrasena) VALUES ($1, $2, $3)'; // Usar tabla 'maestros' (minúscula)
 
-        // Usar dbPool.query
-        await dbPool.query(sql, [nombre, email, hash]);
+        // Usar db.pool.query
+        await db.pool.query(sql, [nombre, email, hash]);
 
         console.log("Registro exitoso para:", email); // Log de éxito
         res.status(201).json({ message: 'Maestro registrado exitosamente.' });
 
     } catch (err) {
         console.error("--- ERROR DETALLADO EN REGISTRO ---");
-        console.error("Error al intentar dbPool.query:", err); // Log del error exacto
+        console.error("Error al intentar db.pool.query:", err); // Log del error exacto
         console.error("Stack del error:", err.stack); // Stack trace completo
         if (err.code === '23505') {
              return res.status(409).json({ message: 'El correo ya está registrado.' });
@@ -56,14 +56,14 @@ app.post('/api/registro', async (req, res) => {
     }
 });
 
-// --- (Resto de las rutas adaptadas para usar dbPool.query) ---
-// Cambia TODAS las ocurrencias de pool.query o client.query a dbPool.query
+// --- (Resto de las rutas adaptadas para usar db.pool.query) ---
+// Cambia TODAS las ocurrencias de pool.query o client.query a db.pool.query
 
 app.post('/api/login', async (req, res) => {
     const { email, contrasena } = req.body;
     try {
         const sql = 'SELECT * FROM maestros WHERE email = $1'; // Usar tabla 'maestros'
-        const result = await dbPool.query(sql, [email]); // Usar dbPool
+        const result = await db.pool.query(sql, [email]); // Usar dbPool
         if (result.rows.length === 0) return res.status(401).json({ message: 'Correo o contraseña incorrectos.' });
         const maestro = result.rows[0];
         const match = await bcrypt.compare(contrasena, maestro.contrasena);
@@ -73,13 +73,13 @@ app.post('/api/login', async (req, res) => {
     } catch (err) { /* ... manejo de error ... */ }
 });
 
-// ... (Adapta TODAS las demás rutas API para usar dbPool.query) ...
+// ... (Adapta TODAS las demás rutas API para usar db.pool.query) ...
 // Ejemplo:
 app.get('/api/dashboard', verificarToken, async (req, res) => {
     const maestroId = req.maestro.id;
     try {
         const sql = `SELECT ... FROM grupos g ... WHERE g.maestro_id = $1 ...`; // Usa tablas minúsculas
-        const result = await dbPool.query(sql, [maestroId]); // Usa dbPool
+        const result = await db.pool.query(sql, [maestroId]); // Usa dbPool
         // ... procesar resultado ...
     } catch (err) { /* ... manejo de error ... */ }
 });

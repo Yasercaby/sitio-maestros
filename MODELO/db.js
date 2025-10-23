@@ -24,5 +24,5 @@
     }
 
     console.log("db.js (Simplificado): Exportando el pool...");
-    module.exports = pool;
+    module.exports = { pool: pool }; // Exportar un objeto con una propiedad 'pool'
     console.log("db.js (Simplificado): Módulo exportado.");
