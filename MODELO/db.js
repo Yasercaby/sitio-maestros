@@ -1,61 +1,52 @@
-console.log("db.js: Cargando el módulo..."); // <-- Espía 1
+    console.log("db.js: Iniciando carga del módulo..."); // <-- Log inicial
 
-// Importar Pool en lugar de Client
-const { Pool } = require('pg');
+    try {
+        // Importar Pool en lugar de Client
+        const { Pool } = require('pg');
+        console.log("db.js: Módulo 'pg' (Pool) importado correctamente."); // <-- Log después de require
 
-// La URL de la base de datos se leerá de una variable de entorno en Render
-const dbUrl = process.env.DATABASE_URL;
-console.log("db.js: DATABASE_URL leída:", dbUrl ? "Encontrada" : "NO ENCONTRADA - ¿Está configurada en Render?"); // <-- Espía 2
+        // La URL de la base de datos se leerá de una variable de entorno en Render
+        const dbUrl = process.env.DATABASE_URL;
+        console.log("db.js: DATABASE_URL leída:", dbUrl ? "Encontrada" : "NO ENCONTRADA"); // <-- Log de URL
 
-// Configuración de la conexión para el Pool
-let connectionConfig;
-try {
-    connectionConfig = dbUrl
-        ? { connectionString: dbUrl, ssl: { rejectUnauthorized: false } } // Render necesita SSL
-        : { // Configuración local (ejemplo)
-            host: 'localhost',
-            user: 'postgres',
-            password: 'tu_password_local', // Cambia esto si usas local
-            database: 'sitios_maestros',
-            port: 5432
-        };
-    console.log("db.js: Configuración de conexión creada:", connectionConfig.connectionString ? "Usando URL de Render" : "Usando config local"); // <-- Espía 3
-} catch (configError) {
-    console.error("!!!!!!!! ERROR CRÍTICO AL CREAR connectionConfig !!!!!!!!");
-    console.error(configError);
-    throw configError; // Lanzar el error para detener la aplicación si falla aquí
-}
+        // Configuración de la conexión para el Pool
+        let connectionConfig;
+        if (dbUrl) {
+             connectionConfig = { connectionString: dbUrl, ssl: { rejectUnauthorized: false } };
+             console.log("db.js: Usando configuración de Render (SSL).");
+        } else {
+            // Configuración local (ejemplo) - No debería usarse en Render
+             connectionConfig = { host: 'localhost', user: 'postgres', password: 'tu_password_local', database: 'sitios_maestros', port: 5432 };
+             console.log("db.js: Usando configuración local (¡Esto NO debería pasar en Render!).");
+        }
+        console.log("db.js: Configuración de conexión creada."); // <-- Log config creada
 
+        // Crear una instancia del Pool DENTRO de un try-catch
+        let pool;
+        try {
+            pool = new Pool(connectionConfig);
+            console.log("db.js: Instancia del Pool creada con éxito."); // <-- Log Pool creado
 
-// Crear una instancia del Pool DENTRO de un try-catch
-let pool;
-try {
-    pool = new Pool(connectionConfig);
-    console.log("db.js: Instancia del Pool creada con éxito."); // <-- Espía 4
+            pool.on('connect', (client) => {
+                console.log('*** Pool de PostgreSQL: Cliente conectado ***');
+            });
+            pool.on('error', (err, client) => {
+                console.error('!!!!!!!! ERROR INESPERADO EN EL POOL !!!!!!!!', err);
+            });
+            console.log("db.js: Listeners de eventos añadidos al pool."); // <-- Log listeners
 
-    // Evento para verificar si el pool se conecta bien (opcional pero útil)
-    // Se conectará la primera vez que se use .query()
-    pool.on('connect', (client) => {
-        console.log('*** Pool de PostgreSQL: Un cliente se ha conectado ***');
-    });
+            console.log("db.js: Exportando el pool..."); // <-- Log antes de exportar
+            module.exports = pool;
+            console.log("db.js: Módulo exportado con éxito."); // <-- Log después de exportar
 
-    // Evento para errores en el pool (importante para depurar)
-    pool.on('error', (err, client) => {
-        console.error('!!!!!!!! ERROR INESPERADO EN EL POOL DE POSTGRESQL !!!!!!!!');
-        console.error(err);
-        // Considera qué hacer aquí. Salir puede ser drástico si es un error temporal.
-        // process.exit(-1);
-    });
+        } catch (poolError) {
+            console.error("!!!!!!!! ERROR CRÍTICO AL CREAR EL POOL !!!!!!!!");
+            console.error(poolError);
+            throw poolError; // Detener si falla la creación del Pool
+        }
 
-    console.log("db.js: Listeners de eventos 'connect' y 'error' añadidos al pool."); // <-- Espía 5
-
-} catch (poolError) {
-    console.error("!!!!!!!! ERROR CRÍTICO AL CREAR EL POOL DE POSTGRESQL !!!!!!!!");
-    console.error(poolError);
-    throw poolError; // Lanzar el error para detener la aplicación si falla aquí
-}
-
-// Exportar el pool. Ahora server.js usará pool.query()
-console.log("db.js: Exportando el pool..."); // <-- Espía 6
-module.exports = pool;
-console.log("db.js: Módulo exportado."); // <-- Espía 7
+    } catch (requireOrConfigError) {
+        console.error("!!!!!!!! ERROR CRÍTICO AL IMPORTAR 'pg' o CREAR CONFIG !!!!!!!!");
+        console.error(requireOrConfigError);
+        throw requireOrConfigError; // Detener si falla el require o la config inicial
+    }
