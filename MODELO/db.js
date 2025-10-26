@@ -19,7 +19,8 @@ const connectionConfig = dbUrl
 const pool = new Pool(connectionConfig);
 
 pool.on('connect', () => {
-    console.log('Pool PostgreSQL conectado.'); // Mensaje simple para los logs
+    // Puedes comentar o quitar este log en producción final si quieres
+    console.log('Pool PostgreSQL conectado.');
 });
 pool.on('error', (err) => {
     // Es importante registrar errores del pool en producción
