@@ -15,11 +15,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (!grupoId) {
         mensajeDiv.textContent = 'ID de grupo no encontrado en la URL.';
+        mensajeDiv.className = 'mensaje red';
+        mensajeDiv.style.display = 'block';
         return;
     }
 
+    // Apuntamos al <tbody> de la nueva tabla
+    const alumnosTbody = document.getElementById('alumnos-lista-asistencia');
+
     try {
-        // CORRECCIÓN CLAVE: Añadir el prefijo "Bearer " al token.
         const response = await fetch('/api/dashboard', {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -31,26 +35,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             if (grupo) {
                 // Llenar la información de la página con los datos del grupo
-                document.getElementById('nombre-grupo').textContent = `Pase de Lista del Grupo: ${grupo.nombre}`;
+                document.getElementById('nombre-grupo').textContent = `Pase de Lista: ${grupo.nombre}`;
                 
                 const hoy = new Date();
                 const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 const fechaFormateada = hoy.toLocaleDateString('es-ES', opciones);
                 document.getElementById('fecha-actual').textContent = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
                 
-                const alumnosLista = document.getElementById('alumnos-lista-asistencia');
+                // --- ¡LÓGICA DE DIBUJADO MODIFICADA! ---
                 if (grupo.alumnos.length > 0) {
-                    alumnosLista.innerHTML = grupo.alumnos.map((alumno, index) => `
-                        <div class="alumno-item">
-                            <label>${index + 1}. ${alumno.apellidoPaterno} ${alumno.apellidoMaterno}, ${alumno.nombre}</label>
-                            <input type="checkbox" name="asistio" value="${alumno.id}" checked>
-                        </div>
-                    `).join('');
+                    // Limpiar el "Cargando..."
+                    alumnosTbody.innerHTML = ''; 
+                    
+                    // Ordenar alumnos por apellido paterno
+                    const alumnosOrdenados = grupo.alumnos.sort((a, b) => 
+                        a.apellidoPaterno.localeCompare(b.apellidoPaterno)
+                    );
+
+                    alumnosOrdenados.forEach((alumno, index) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'alumno-row';
+                        tr.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${alumno.apellidoPaterno} ${alumno.apellidoMaterno}, ${alumno.nombre}</td>
+                            <td>
+                                <div class="btn-toggle-group">
+                                    <!-- Botón Presente (activo por defecto) -->
+                                    <button type="button" class="btn-asistencia presente active" data-value="1">Presente</button>
+                                    <!-- Botón Ausente -->
+                                    <button type="button" class="btn-asistencia ausente" data-value="0">Ausente</button>
+                                    <!-- Input oculto que guarda el valor (1 o 0) -->
+                                    <input type="hidden" class="asistencia-input" value="1" data-alumno-id="${alumno.id}">
+                                </div>
+                            </td>
+                        `;
+                        alumnosTbody.appendChild(tr);
+                    });
                 } else {
-                    alumnosLista.innerHTML = '<p>No hay alumnos en este grupo.</p>';
+                    alumnosTbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 40px; color: #6b7280;">No hay alumnos en este grupo.</td></tr>';
                 }
             } else {
                 mensajeDiv.textContent = 'Grupo no encontrado.';
+                mensajeDiv.className = 'mensaje red';
+                mensajeDiv.style.display = 'block';
             }
         } else {
             // Si el token es inválido o expiró, nos vamos al login
@@ -59,27 +86,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         mensajeDiv.textContent = 'Error de conexión con el servidor.';
+        mensajeDiv.className = 'mensaje red';
+        mensajeDiv.style.display = 'block';
         console.error('Error:', error);
     }
 
-    // --- LÓGICA PARA ENVIAR EL FORMULARIO DE ASISTENCIA ---
+    // --- ¡NUEVO LISTENER! Para los botones de toggle (Presente/Ausente) ---
+    alumnosTbody.addEventListener('click', (e) => {
+        // Verificar si se hizo clic en un botón de asistencia
+        if (e.target.classList.contains('btn-asistencia')) {
+            const botonClickeado = e.target;
+            const grupoDeBotones = botonClickeado.closest('.btn-toggle-group');
+            
+            // 1. Quitar 'active' de ambos botones (hermanos)
+            grupoDeBotones.querySelectorAll('.btn-asistencia').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 2. Poner 'active' solo en el botón clickeado
+            botonClickeado.classList.add('active');
+
+            // 3. Actualizar el valor del input oculto
+            const inputOculto = grupoDeBotones.querySelector('.asistencia-input');
+            inputOculto.value = botonClickeado.dataset.value; // "1" o "0"
+        }
+    });
+
+    // --- LÓGICA PARA ENVIAR EL FORMULARIO (MODIFICADA) ---
     document.getElementById('asistenciaForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const checkboxes = document.querySelectorAll('#asistenciaForm input[name="asistio"]');
-        if (checkboxes.length === 0) {
+        // --- MODIFICADO: Leer los inputs ocultos ---
+        const inputs = document.querySelectorAll('.asistencia-input');
+        
+        if (inputs.length === 0) {
             mensajeDiv.textContent = 'Error: No se puede pasar lista sin alumnos.';
-            mensajeDiv.style.color = 'red';
+            mensajeDiv.className = 'mensaje red';
+            mensajeDiv.style.display = 'block';
             return;
         }
 
-        const asistencias = Array.from(checkboxes).map(checkbox => ({
-            alumnoId: parseInt(checkbox.value),
-            asistio: checkbox.checked ? 1 : 0
+        // Crear el array de asistencias leyendo los inputs ocultos
+        const asistencias = Array.from(inputs).map(input => ({
+            alumnoId: parseInt(input.dataset.alumnoId),
+            asistio: parseInt(input.value) // 1 o 0
         }));
 
         try {
-            // CORRECCIÓN CLAVE: Añadir el prefijo "Bearer " al token.
             const response = await fetch('/api/asistencia', {
                 method: 'POST',
                 headers: {
@@ -92,14 +145,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const responseData = await response.json();
             if (response.ok) {
                 mensajeDiv.textContent = responseData.message;
-                mensajeDiv.style.color = 'green';
+                mensajeDiv.className = 'mensaje green'; // Usar clases de styles.css
+                mensajeDiv.style.display = 'block';
+                // Desactivar el botón para evitar doble envío
+                e.target.querySelector('button[type="submit"]').disabled = true;
+                e.target.querySelector('button[type="submit"]').textContent = 'Asistencia Guardada';
+
             } else {
                 mensajeDiv.textContent = responseData.message || 'Error al registrar la asistencia.';
-                mensajeDiv.style.color = 'red';
+                mensajeDiv.className = 'mensaje red';
+                mensajeDiv.style.display = 'block';
             }
         } catch (error) {
             mensajeDiv.textContent = 'Error de conexión con el servidor.';
-            mensajeDiv.style.color = 'red';
+            mensajeDiv.className = 'mensaje red';
+            mensajeDiv.style.display = 'block';
             console.error('Error:', error);
         }
     });

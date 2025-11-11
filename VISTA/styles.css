@@ -1,131 +1,629 @@
+/* --- 1. IMPORTACIÓN DE FUENTE Y RESET --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F1FAEE; /* Fondo muy claro y relajante */
-    color: #333; /* Texto oscuro para buena legibilidad */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* FONDO: Gris frío (Slate 100) */
+    background-color: #F1F5F9; 
+    color: #1E293B; /* TEXTO: Oscuro (Slate 800) */
     margin: 0;
+    line-height: 1.5;
 }
 
 .container {
     width: 90%;
-    max-width: 1200px;
-    padding: 20px;
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0;
     box-sizing: border-box;
 }
 
+/* --- 2. HEADER (PROFESIONAL) --- */
 header {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background-color: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
 header h1 {
-    color: #1D3557; /* Un azul marino profundo y profesional */
+    color: #0F172A; /* Texto (Slate 900) */
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    font-weight: 700;
 }
 
+/* --- 3. BOTONES (ESTILO GRADIENTE) --- */
 .button, a.button {
-    background-color: #457B9D; /* Un azul teal vibrante para los botones */
+    /* COLOR PRIMARIO: Gradiente Índigo -> Morado */
+    background-image: linear-gradient(to right, #4F46E5, #7C3AED);
+    background-color: #4F46E5; /* Fallback */
     color: white;
     padding: 12px 20px;
-    border: none;
+    border: none; /* Sin borde */
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     text-decoration: none;
-    transition: background-color 0.3s, transform 0.2s;
-    font-weight: bold;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    /* Sombra sutil para el efecto "elevado" */
+    box-shadow: 0 4px 15px -2px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s ease;
 }
 
 .button:hover, a.button:hover {
-    background-color: #2A486B; /* Azul un poco más oscuro al pasar el cursor */
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* Hover: Gradiente más oscuro */
+    background-image: linear-gradient(to right, #4338CA, #6D28D9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px -2px rgba(124, 58, 237, 0.4);
 }
 
-.forms-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
+/* Botón de Cerrar Sesión (Rojo) */
+a#cerrarSesion.button {
+    background-image: none; /* Quitar gradiente */
+    background-color: #ef4444;
+    box-shadow: 0 4px 15px -2px rgba(239, 68, 68, 0.3);
+}
+a#cerrarSesion.button:hover {
+    background-image: none;
+    background-color: #dc2626;
+    box-shadow: 0 6px 20px -2px rgba(239, 68, 68, 0.4);
 }
 
+/* --- 4. LAYOUT DEL DASHBOARD --- */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+/* --- 5. TARJETAS DE FORMULARIO --- */
 .form-card {
     background: #FFFFFF;
-    padding: 30px;
+    padding: 24px;
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    flex: 1;
-    min-width: 300px;
-    border-top: 5px solid #457B9D;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    margin-bottom: 24px;
 }
 
 .form-card h2 {
-    color: #1D3557;
+    color: #1E293B; /* Texto (Slate 800) */
     margin-top: 0;
-    font-size: 1.8rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
-form {
+.form-card form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
-input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+.form-card label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #475569; /* Texto (Slate 600) */
+}
+
+/* Estilo unificado para inputs y selects */
+.form-card input[type="text"],
+.form-card input[type="number"],
+.form-card input[type="email"],
+.form-card input[type="password"],
+.form-card select {
     width: 100%;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #CBD5E1; /* Borde (Slate 300) */
+    border-radius: 8px;
+    font-size: 0.9rem;
     box-sizing: border-box;
-    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+}
+.form-card select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
 }
 
+/* Focus: Usa el color Índigo */
+.form-card input:focus,
+.form-card select:focus {
+    outline: none;
+    border-color: #4F46E5; 
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* --- 6. CONTENEDOR DE GRUPOS --- */
+.grupos-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
 .grupos-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    gap: 20px;
 }
 
+/* --- 7. NUEVO ESTILO DE TARJETA DE GRUPO --- */
 .grupo-card {
-    background: #FFFFFF;
-    padding: 25px;
+    background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    border-top: 5px solid #E63946; /* Rojo para un toque de color */
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    position: relative; /* Para el pseudo-elemento */
+    padding-top: 4px; /* Espacio para la barra de gradiente */
+}
+/* Barra de Gradiente Superior */
+.grupo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-image: linear-gradient(to right, #4F46E5, #7C3AED);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
-.grupo-card h2 {
-    color: #1D3557;
-    margin: 0;
-    font-size: 1.5rem;
+.grupo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+.card-body {
+    padding: 20px 24px;
+}
+.card-body h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1E293B; /* Texto (Slate 800) */
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.grupo-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 0.875rem;
+    color: #475569; /* Texto (Slate 600) */
+    font-weight: 500;
+}
+.grupo-stats span {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #F1F5F9; /* Fondo (Slate 100) */
+    border-radius: 6px;
+}
+.card-footer {
+    margin-top: auto;
+    border-top: 1px solid #F1F5F9; /* Borde (Slate 100) */
+    background-color: #fdfdfe;
+    padding: 16px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.btn-accion {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+/* Botón Primario (Gradiente) */
+.btn-accion.btn-primario {
+    background-image: linear-gradient(to right, #4F46E5, #7C3AED);
+    background-color: #4F46E5;
+    color: white;
+    grid-column: 1 / -1;
+    border: none;
+}
+.btn-accion.btn-primario:hover { 
+    background-image: linear-gradient(to right, #4338CA, #6D28D9);
 }
 
-.grupo-card p {
-    color: #666;
-    margin: 0;
+/* Botones Secundarios (Grises) */
+.btn-accion.btn-secundario {
+    background-color: #F1F5F9; /* Fondo (Slate 100) */
+    color: #475569; /* Texto (Slate 600) */
 }
+.btn-accion.btn-secundario:hover { background-color: #E2E8F0; } /* Borde (Slate 200) */
 
-.acciones-grupo {
+/* Botón Peligro (Rojo) */
+.btn-accion.btn-peligro {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    grid-column: 1 / -1;
+}
+.btn-accion.btn-peligro:hover { background-color: #fee2e2; }
+
+
+/* --- 8. ESTILOS DE REPORTE Y HISTORIAL --- */
+.report-wrapper, .history-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+}
+.report-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+.filter-card, .results-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+}
+.filter-card h2, .results-card h2, .history-card h1, .history-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1E293B; /* Texto (Slate 800) */
+}
+.history-card h1 { font-size: 1.5rem; font-weight: 700; }
+.filtros-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+.btn-filtro {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+    color: #475569; /* Texto (Slate 600) */
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+.btn-filtro:hover {
+    background-color: #F1F5F9; /* Fondo (Slate 100) */
+    border-color: #CBD5E1; /* Borde (Slate 300) */
+}
+/* Botón Activo (Gradiente) */
+.btn-filtro.active {
+    background-image: linear-gradient(to right, #4F46E5, #7C3AED);
+    color: #ffffff;
+    border-color: #4F46E5;
+    box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3);
+}
+.history-table-wrapper, .results-card #resultados-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    border-radius: 8px;
+}
+.reporte-tabla, .historial-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+.reporte-tabla th, .historial-tabla th {
+    padding: 14px 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-align: left;
+    transition: all 0.3s ease;
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+    color: #64748B; /* Texto (Slate 500) */
+    border-bottom: 2px solid #E2E8F0; /* Borde (Slate 200) */
+}
+.reporte-tabla td, .historial-tabla td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    color: #334155; /* Texto (Slate 700) */
+    white-space: nowrap;
+}
+.reporte-tabla tbody tr:nth-child(even),
+.historial-tabla tbody tr:nth-child(even) {
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+}
+.historial-tabla th { text-align: center; }
+.historial-tabla th:first-child, .historial-tabla td:first-child {
+    text-align: left;
+    font-weight: 600;
+    min-width: 180px;
+    background-color: #fff;
+}
+.historial-tabla td { text-align: center; }
+.historial-tabla tr:last-child td { border-bottom: none; }
+/* Colores de Reporte (Funcionales) */
+.reporte-tabla.rango-semana thead th { background-color: #007bff; color: #ffffff; }
+.reporte-tabla.rango-mes thead th { background-color: #28a745; color: #ffffff; }
+.reporte-tabla.rango-3meses thead th { background-color: #ffc107; color: #212529; }
+.reporte-tabla.rango-6meses thead th { background-color: #fd7e14; color: #ffffff; }
+.reporte-tabla.rango-anio thead th { background-color: #dc3545; color: #ffffff; }
 
-.alumnos-lista {
+/* Iconos de Status (Funcionales) */
+.status-icon {
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: inline-block;
+    margin: 0 4px;
+}
+.status-icon:hover { transform: scale(1.2); }
+.icon-presente { color: #10b981; } /* Verde */
+.icon-ausente { color: #ef4444; } /* Rojo */
+.icon-justificado { color: #f59e0b; } /* Ámbar */
+.icon-editar { color: #6b7280; } /* Gris */
+.icon-sin-registro { color: #9ca3af; } /* Gris claro */
+
+/* --- Modal (Historial) --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 450px;
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
+}
+@keyframes modalFadeIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; color: #111827; }
+.modal-cerrar { font-size: 1.5rem; font-weight: 600; color: #9CA3AF; cursor: pointer; transition: color 0.2s ease; }
+.modal-cerrar:hover { color: #111827; }
+.modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.modal-body label { font-weight: 500; color: #374151; }
+.modal-body input[type="checkbox"] { margin-right: 8px; transform: scale(1.1); }
+.modal-body textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #CBD5E1; /* Borde (Slate 300) */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    resize: vertical;
+}
+.modal-footer {
+    padding: 16px 24px;
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+    border-top: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-footer .button { margin: 0; }
+#modal-mensaje { font-size: 0.9rem; font-weight: 500; color: #dc2626; }
+
+/* --- 9. MENSAJES DE ESTADO --- */
+.mensaje {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 500;
+    padding: 12px;
+    border-radius: 8px;
+}
+.mensaje.green {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+.mensaje.red {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+#mensaje-reporte, #mensaje-grupos, #mensaje-historial {
+    color: #6b7280;
+    font-size: 1rem;
+    text-align: center;
+    padding: 48px 24px;
+    background-color: #fdfdfd;
+    border: 1px dashed #E2E8F0; /* Borde (Slate 200) */
+    border-radius: 8px;
+}
+
+/* --- 10. RESPONSIVIDAD --- */
+@media (max-width: 900px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    header h1 { font-size: 1.5rem; }
+    
+    .report-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .filter-card h2 { text-align: center; }
+    .filtros-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .btn-filtro {
+        flex-grow: 1;
+        text-align: center;
+    }
+}
+
+/* --- 11. ESTILOS DE CALIFICACIONES (¡NUEVO!) --- */
+
+/* Layout de 2 columnas para calificaciones */
+.calificaciones-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+}
+/* Formulario de configuración de unidades */
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.config-form input[type="number"] {
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #CBD5E1; /* Borde (Slate 300) */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+.config-form .button {
+    width: 100%;
+}
+
+/* Contenedor de la tabla de calificaciones */
+.calificaciones-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.calificaciones-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+.calificaciones-tabla th {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-align: left;
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+    color: #374151; /* Texto (Slate 700) */
+    border-bottom: 2px solid #E2E8F0; /* Borde (Slate 200) */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+/* Encabezado de Unidades (U1, U2...) centrado */
+.calificaciones-tabla th.unidad-header {
+    text-align: center;
+}
+.calificaciones-tabla td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    white-space: nowrap;
+}
+.calificaciones-tabla tr:last-child td {
+    border-bottom: none;
+}
+/* Columna de Alumno */
+.calificaciones-tabla td:first-child {
+    font-weight: 500;
+    color: #1E293B; /* Texto (Slate 800) */
+    min-width: 180px;
+}
+/* Input de calificación */
+.grade-input {
+    width: 60px;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #CBD5E1; /* Borde (Slate 300) */
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+    -moz-appearance: textfield;
+}
+.grade-input::-webkit-outer-spin-button,
+.grade-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.grade-input:focus {
+    outline: none;
+    border-color: #4F46E5; /* Índigo */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* Botón de guardar calificaciones (Verde) */
+.btn-guardar-calif {
+    width: 100%;
+    margin-top: 16px;
+    background-image: none; /* Quitar gradiente */
+    background-color: #10b981;
+    box-shadow: 0 4px 15px -2px rgba(16, 185, 129, 0.3);
+}
+.btn-guardar-calif:hover {
+    background-image: none;
+    background-color: #059669;
+    box-shadow: 0 6px 20px -2px rgba(16, 185, 129, 0.4);
+}
+
+/* Sección de Promedio Final */
+.promedio-section {
+    margin-top: 24px;
+}
+#promedio-final-resultados {
+    margin-top: 16px;
+}
+/* Lista de promedios */
+.promedio-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -133,35 +631,34 @@ input[type="text"], input[type="number"], input[type="email"], input[type="passw
     flex-direction: column;
     gap: 10px;
 }
-
-.alumnos-lista li {
-    background-color: #f8f9fa;
-    padding: 12px;
-    border-radius: 6px;
-    border-left: 3px solid #E63946;
+.promedio-list li {
+    padding: 12px 16px;
+    background-color: #F8FAFC; /* Fondo (Slate 50) */
+    border: 1px solid #E2E8F0; /* Borde (Slate 200) */
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+.promedio-list .promedio-nombre {
+    font-weight: 500;
+    color: #334155; /* Texto (Slate 700) */
+}
+.promedio-list .promedio-valor {
+    font-weight: 700;
+    font-size: 1rem;
+}
+.promedio-list .promedio-aprobado {
+    color: #059669; /* Verde */
+}
+.promedio-list .promedio-reprobado {
+    color: #dc2626; /* Rojo */
 }
 
-.mensaje {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.mensaje.green {
-    color: #2D6A4F;
-}
-
-.mensaje.red {
-    color: #E63946;
-}
-
-a#cerrarSesion.button {
-    background-color: #E63946;
-}
-a#cerrarSesion.button:hover {
-    background-color: #D62839;
-}
-
-.alumnos-ocultos {
-    display: none;
+/* Responsividad para Calificaciones */
+@media (max-width: 900px) {
+    .calificaciones-layout {
+        grid-template-columns: 1fr;
+    }
 }

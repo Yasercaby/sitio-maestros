@@ -1,28 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión</title>
-    <!-- Esta ruta está bien, styles.css está en la misma carpeta -->
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <!-- Importar la fuente 'Inter' -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Estilos para la página de Autenticación --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6; /* Fondo gris claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #1a202c;
+        }
+
+        .auth-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 40px 48px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .auth-card h1 {
+            font-size: 1.75rem; /* 28px */
+            font-weight: 700;
+            color: #111827;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 32px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        form label {
+            font-weight: 500;
+            font-size: 0.875rem; /* 14px */
+            color: #4a5568;
+        }
+
+        form input[type="email"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-sizing: border-box; /* Importante */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 16px;
+        }
+
+        .button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.875rem; /* 14px */
+        }
+        .auth-link a {
+            color: #3b82f6;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Mensaje de Error --- */
+        .mensaje {
+            margin-top: 0;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 500;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none; /* Oculto por defecto */
+        }
+        .mensaje.red {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Inicio de Sesión</h1>
-        <form id="loginForm">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+    <div class="auth-card">
+        <h1>Iniciar Sesión</h1>
+        
+        <!-- Mensaje de Error/Éxito (controlado por JS) -->
+        <p id="mensaje-login" class="mensaje"></p>
 
-            <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" required>
+        <form id="login-form">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div>
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" required>
+            </div>
+            <button type="submit" class="button">Iniciar Sesión</button>
+        </form>
 
-            <button type="submit">Iniciar Sesión</button>
-        </form>
-        <div id="mensaje" class="mensaje"></div>
-    </div>
+        <p class="auth-link">
+            ¿No tienes una cuenta? <a href="/registro">Regístrate aquí</a>
+        </p>
+    </div>
 
-    <!-- CORRECCIÓN: Le decimos que busque el script dentro de la carpeta "js" -->
-    <script src="js/login.js"></script>
+    <!-- Asegúrate de que tu JS de login se llama así -->
+    <script src="js/login.js"></script>
 </body>
 </html>

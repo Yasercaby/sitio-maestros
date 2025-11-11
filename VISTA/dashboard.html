@@ -4,47 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard del Maestro</title>
+    <!-- ¡IMPORTANTE! El CSS ahora viene de un solo lugar -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Dashboard del Maestro</h1>
-            <p>Bienvenido. Aquí puede gestionar sus grupos y alumnos.</p>
+            <h1>Mi Dashboard</h1>
             <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
         </header>
 
-        <section class="forms-container">
-            <div class="form-card">
-                <h2>Crear Nuevo Grupo</h2>
-                <form id="crearGrupoForm">
-                    <label for="grupo-nombre">Nombre del Grupo:</label>
-                    <input type="text" id="grupo-nombre" required>
-                    <button type="submit" class="button">Crear Grupo</button>
-                </form>
-            </div>
+        <!-- Nuevo Layout de Grid -->
+        <div class="dashboard-layout">
+            
+            <!-- Columna 1: Formularios -->
+            <aside class="form-sidebar">
+                <div class="form-card">
+                    <h2>Crear Nuevo Grupo</h2>
+                    <form id="crearGrupoForm">
+                        <label for="grupo-nombre">Nombre del Grupo:</label>
+                        <input type="text" id="grupo-nombre" required placeholder="Ej. Cálculo Diferencial">
+                        <button type="submit" class="button">Crear Grupo</button>
+                    </form>
+                </div>
 
-            <div class="form-card">
-                <h2>Agregar Alumno</h2>
-                <form id="agregarAlumnoForm">
-                    <label for="apellido-paterno">Apellido Paterno:</label>
-                    <input type="text" id="apellido-paterno" required>
-                    <label for="apellido-materno">Apellido Materno:</label>
-                    <input type="text" id="apellido-materno" required>
-                    <label for="nombre-alumno">Nombre(s):</label>
-                    <input type="text" id="nombre-alumno" required>
-                    <label for="alumno-grupo-id">ID del Grupo:</label>
-                    <input type="number" id="alumno-grupo-id" required>
-                    <button type="submit" class="button">Agregar Alumno</button>
-                </form>
-            </div>
-        </section>
+                <div class="form-card">
+                    <h2>Agregar Alumno</h2>
+                    <form id="agregarAlumnoForm">
+                        <label for="apellido-paterno">Apellido Paterno:</label>
+                        <input type="text" id="apellido-paterno" required>
+                        <label for="apellido-materno">Apellido Materno:</label>
+                        <input type="text" id="apellido-materno" required>
+                        <label for="nombre-alumno">Nombre(s):</label>
+                        <input type="text" id="nombre-alumno" required>
+                        <label for="alumno-grupo-select">Asignar a Grupo:</label>
+                        <!-- Este 'select' se llenará automáticamente por el JS -->
+                        <select id="alumno-grupo-select" required>
+                            <option value="">Cargando grupos...</option>
+                        </select>
+                        <button type="submit" class="button">Agregar Alumno</button>
+                    </form>
+                </div>
+            </aside>
 
-        <section class="grupos-container">
-            <p id="mensaje-grupos">No tiene grupos asignados.</p>
-        </section>
+            <!-- Columna 2: Lista de Grupos -->
+            <main class="grupos-section">
+                <h2>Mis Grupos</h2>
+                <section class="grupos-container">
+                    <p id="mensaje-grupos">Cargando grupos...</p>
+                    <!-- Las tarjetas de grupo se generarán aquí por JS -->
+                </section>
+            </main>
 
-        <p id="mensaje-dashboard" class="mensaje"></p>
+        </div>
+
+        <p id="mensaje-dashboard" class="mensaje" style="display: none;"></p> <!-- Oculto por defecto -->
+
+        <!-- Este input numérico lo ocultamos, el 'select' lo reemplaza -->
+        <input type="number" id="alumno-grupo-id" style="display: none;">
     </div>
 
     <script src="js/dashboard.js" type="module"></script>

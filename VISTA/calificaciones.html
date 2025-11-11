@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calificaciones</title>
+    <!-- Tus estilos principales (ya incluyen la fuente 'Inter') -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,35 +14,59 @@
             <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
         </header>
 
-        <section id="calificaciones-container">
-            <h1 id="nombre-grupo-calificaciones">Cargando...</h1>
-            <p>Ingresa las calificaciones de cada unidad para los alumnos. Para calcular el promedio total, haz clic en el botón.</p>
-            
-            <div id="unidades-input">
-                <label for="numero-unidades">Número de unidades:</label>
-                <input type="number" id="numero-unidades" min="1">
-                <button type="button" id="generar-unidades-btn" class="button">Generar Unidades</button>
-            </div>
-            
-            <form id="formulario-calificaciones">
-                <div id="alumnos-calificaciones">
-                    <!-- El JavaScript llenará esta sección -->
-                </div>
-                <div class="calificaciones-acciones">
-                    <button type="submit" class="button">Guardar Calificaciones</button>
-                    <button type="button" id="calcular-promedio-btn" class="button">Calcular Promedio Final</button>
-                </div>
-            </form>
-            
-            <div id="promedio-final-resultados">
-                <!-- Aquí se mostrarán los promedios -->
-            </div>
+        <!-- Nueva Tarjeta de Contenido -->
+        <section class="calificaciones-layout">
 
-            <p id="mensaje-calificaciones" class="mensaje"></p>
+            <!-- Columna 1: Configuración y Promedios -->
+            <aside class="calificaciones-sidebar">
+                <div class="form-card">
+                    <h2>Configuración</h2>
+                    <form id="configuracion-form" class="config-form">
+                        <label for="numero-unidades">Número de Unidades:</label>
+                        <input type="number" id="numero-unidades" min="1" max="10" value="3">
+                        <button type="button" id="generar-unidades-btn" class="button">Generar Tabla</button>
+                    </form>
+                </div>
+
+                <div class="form-card">
+                    <h2>Promedio Final</h2>
+                    <button type="button" id="calcular-promedio-btn" class="button" style="width: 100%;">Calcular Promedios</button>
+                    <div id="promedio-final-resultados">
+                        <!-- El JS llenará esta lista -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Columna 2: Tabla de Calificaciones -->
+            <main class="calificaciones-main">
+                <div class="form-card">
+                    <h1 id="nombre-grupo-calificaciones">Cargando...</h1>
+                    <p>Ingresa las calificaciones para cada unidad (0-100).</p>
+                    
+                    <form id="formulario-calificaciones">
+                        <!-- Contenedor para la tabla con scroll -->
+                        <div class="calificaciones-table-wrapper">
+                            <table class="calificaciones-tabla" id="calificaciones-tabla-real">
+                                <thead>
+                                    <!-- El JS llenará este thead -->
+                                </thead>
+                                <tbody>
+                                    <!-- El JS llenará este tbody -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="submit" class="button btn-guardar-calif">Guardar Calificaciones</button>
+                    </form>
+                    
+                    <!-- Mensaje de error/éxito -->
+                    <p id="mensaje-calificaciones" class="mensaje" style="display: none;"></p>
+                </div>
+            </main>
+
         </section>
     </div>
 
-    <!-- Script sin 'type="module"' para máxima compatibilidad -->
+    <!-- Tu script de calificaciones -->
     <script src="js/calificaciones.js"></script>
 </body>
 </html>

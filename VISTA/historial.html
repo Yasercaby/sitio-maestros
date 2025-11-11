@@ -4,7 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Asistencia</title>
+    <!-- Importar la fuente 'Inter' -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Reutiliza tus estilos existentes -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Estilos Profesionales para esta página -->
+    <style>
+        /* --- 1. Reset Básico y Fuente --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6; /* Un gris muy claro para el fondo */
+            color: #1a202c;
+        }
+
+        /* --- 2. Layout del Contenedor Principal --- */
+        .container {
+            max-width: 1200px; /* Centra el contenido */
+            margin: 24px auto;
+        }
+        
+        /* --- 3. Header (el de tu styles.css) --- */
+        /* Ajustamos los botones del header si es necesario */
+        header .button {
+            font-weight: 500;
+        }
+        header #cerrarSesion {
+            background-color: #ef4444; /* Rojo */
+        }
+        header #cerrarSesion:hover {
+            background-color: #dc2626;
+        }
+
+        /* --- 4. La "Tarjeta" de Contenido --- */
+        .history-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden; /* Para que la tabla no se salga */
+        }
+        
+        .history-card h1 {
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+        
+        .history-card > p { /* Selector > para no afectar párrafos dentro de la tabla o modal */
+            font-size: 1rem; /* 16px */
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+
+        /* --- 5. Estilo de la Tabla de Historial --- */
+        /* Contenedor con scroll horizontal para móviles */
+        .history-table-wrapper {
+            width: 100%;
+            overflow-x: auto; /* Permite scroll horizontal si la tabla es muy ancha */
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .historial-tabla {
+            width: 100%;
+            border-collapse: collapse; /* Bordes limpios */
+            min-width: 600px; /* Ancho mínimo para que no se comprima */
+        }
+
+        /* Encabezado (Alumno | 10 nov | 09 nov ...) */
+        .historial-tabla th {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 0.8rem; /* 12.8px */
+            text-align: left;
+            background-color: #f9fafb; /* Fondo del encabezado */
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            text-align: center;
+        }
+
+        /* Columna de Alumno fija */
+        .historial-tabla th:first-child,
+        .historial-tabla td:first-child {
+            left: 0;
+            background-color: #fff;
+            font-weight: 600;
+            min-width: 180px;
+            text-align: left; /* Alineación del nombre del alumno */
+        }
+
+        /* Celdas (✅ ❌ ✏️) */
+        .historial-tabla td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #334155;
+            text-align: center; /* Centra los íconos */
+            white-space: nowrap; /* Evita que el nombre del alumno se rompa */
+        }
+        
+        /* Celdas de Alumno (alineadas a la izquierda) */
+        .historial-tabla td:first-child {
+            text-align: left;
+        }
+
+        /* Quitar borde de la última fila */
+        .historial-tabla tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- 6. Estilos para los Íconos (¡Importante!) --- */
+        .status-icon {
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            display: inline-block;
+            margin: 0 4px; /* Espacio entre iconos */
+        }
+        .status-icon:hover {
+            transform: scale(1.2);
+        }
+        .icon-presente { color: #10b981; } /* Verde */
+        .icon-ausente { color: #ef4444; } /* Rojo */
+        .icon-justificado { color: #f59e0b; } /* Ámbar */
+        .icon-editar { color: #6b7280; } /* Gris */
+        .icon-sin-registro { color: #9ca3af; } /* Gris claro */
+
+        /* --- 7. Mensaje de Error/Cargando --- */
+        #mensaje-historial {
+            color: #ef4444;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* --- 8. Estilos del Modal (AÑADIDOS) --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        @keyframes modalFadeIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        .modal-cerrar {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-cerrar:hover { color: #111827; }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .modal-body label {
+            font-weight: 500;
+            color: #374151;
+        }
+        .modal-body input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+        .modal-body textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px 12px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+        .modal-footer {
+            padding: 16px 24px;
+            background-color: #f9fafb;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-footer .button {
+            margin: 0;
+        }
+        #modal-mensaje {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #dc2626; /* Color de error */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,15 +240,24 @@
             <a href="#" id="cerrarSesion" class="button">Cerrar Sesión</a>
         </header>
 
-        <section id="historial-container-main">
+        <!-- Nueva "Tarjeta" de Contenido -->
+        <section class="history-card">
             <h1 id="nombre-grupo-historial">Cargando...</h1>
             <p>Aquí puedes ver y editar el historial de asistencias del grupo.</p>
             
-            <!-- Este div se mantiene para la tabla -->
-            <div id="historial-tabla"></div>
+            <!-- Nuevo Contenedor para Scroll -->
+            <div class="history-table-wrapper">
+                <!-- El JS llenará esta tabla -->
+                <table id="historial-tabla-real" class="historial-tabla">
+                    <!-- El JS creará el <thead> y <tbody> aquí -->
+                </table>
+            </div>
             
-            <!-- Este párrafo ahora mostrará el error si ocurre uno -->
+            <!-- Mensaje de error (si existe) -->
             <p id="mensaje-historial" class="mensaje"></p>
+
+            <!-- Este div ya no lo usamos, lo dejamos por si tu JS lo necesita, pero la tabla real es la de arriba -->
+            <div id="historial-tabla" style="display: none;"></div>
         </section>
     </div>
 

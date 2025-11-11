@@ -1,19 +1,20 @@
-// NO necesita el guardia de seguridad al principio.
+// --- Conectado al nuevo HTML: 'registro-form' y 'mensaje-registro' ---
 
-// Solo necesita el listener para el formulario.
-document.getElementById('registroForm').addEventListener('submit', async (e) => {
+document.getElementById('registro-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nombre = document.getElementById('nombre').value;
     const email = document.getElementById('email').value;
     const contrasena = document.getElementById('contrasena').value;
-    const mensajeDiv = document.getElementById('mensaje');
+    // Apunta al nuevo ID del párrafo de mensaje
+    const mensajeDiv = document.getElementById('mensaje-registro');
 
+    // Ocultar y limpiar mensajes anteriores
     mensajeDiv.textContent = '';
-    mensajeDiv.style.color = 'black';
+    mensajeDiv.style.display = 'none';
+    mensajeDiv.className = 'mensaje'; // Resetea la clase
 
     try {
-        // CORRECCIÓN: Usar ruta relativa para la API
         const response = await fetch('/api/registro', {
             method: 'POST',
             headers: {
@@ -25,17 +26,26 @@ document.getElementById('registroForm').addEventListener('submit', async (e) => 
         const data = await response.json();
 
         if (response.ok) {
-            mensajeDiv.textContent = data.message + " Ahora puedes iniciar sesión."; // Mensaje mejorado
-            mensajeDiv.style.color = 'green';
-            document.getElementById('registroForm').reset(); // Limpia el formulario
+            // Éxito: Mostrar mensaje verde
+            mensajeDiv.textContent = data.message || '¡Registro exitoso! Ahora puedes iniciar sesión.';
+            mensajeDiv.className = 'mensaje green'; // Añade la clase 'green'
+            mensajeDiv.style.display = 'block'; // Muestra el mensaje
+            
+            // Limpiar el formulario
+            document.getElementById('registro-form').reset();
+
         } else {
+            // Error: Mostrar mensaje rojo
             mensajeDiv.textContent = data.message || 'Error en el registro';
-            mensajeDiv.style.color = 'red';
+            mensajeDiv.className = 'mensaje red'; // Añade la clase 'red'
+            mensajeDiv.style.display = 'block'; // Muestra el mensaje
         }
 
     } catch (error) {
-        mensajeDiv.textContent = 'Error de conexión con el servidor.';
-        mensajeDiv.style.color = 'red';
+        // Error de conexión: Mostrar mensaje rojo
+        mensajeDiv.textContent = 'Error al conectar con el servidor.';
+        mensajeDiv.className = 'mensaje red'; // Añade la clase 'red'
+        mensajeDiv.style.display = 'block'; // Muestra el mensaje
         console.error('Error:', error);
     }
 });

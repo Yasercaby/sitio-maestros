@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Faltas</title>
+    <!-- Reutiliza tus estilos existentes -->
+    <link rel="stylesheet" href="styles.css"> 
+    
+    <!-- Estilos rápidos solo para esta página -->
+    <style>
+        .filtros-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .reporte-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .reporte-tabla th, .reporte-tabla td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .reporte-tabla th {
+            background-color: #f2f2f2;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* --- 🎨 AQUÍ EMPIEZAN LOS NUEVOS COLORES FUERTES 🎨 --- */
+
+        /* 1 Semana (Azul) */
+        .reporte-tabla.rango-semana thead th {
+            background-color: #007bff; /* Fondo azul fuerte */
+            color: #ffffff; /* Texto blanco */
+        }
+
+        /* 1 Mes (Verde) */
+        .reporte-tabla.rango-mes thead th {
+            background-color: #28a745; /* Fondo verde fuerte */
+            color: #ffffff; /* Texto blanco */
+        }
+
+        /* 3 Meses (Amarillo) */
+        .reporte-tabla.rango-3meses thead th {
+            background-color: #ffc107; /* Fondo amarillo fuerte */
+            color: #212529; /* Texto oscuro para que contraste */
+        }
+
+        /* 6 Meses (Naranja) */
+        .reporte-tabla.rango-6meses thead th {
+            background-color: #fd7e14; /* Fondo naranja fuerte */
+            color: #ffffff; /* Texto blanco */
+        }
+
+        /* 1 Año (Rojo) */
+        .reporte-tabla.rango-anio thead th {
+            background-color: #dc3545; /* Fondo rojo fuerte */
+            color: #ffffff; /* Texto blanco */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="titulo-reporte">Reporte de Faltas</h1>
+            <!-- Botón para regresar al dashboard -->
+            <a href="/dashboard" class="button">Volver al Dashboard</a>
+        </header>
+
+        <section>
+            <h2>Seleccionar Periodo</h2>
+            <!-- Aquí están los botones de filtro que querías -->
+            <div class="filtros-container">
+                <button class="button btn-filtro" data-rango="1-semana">1 Semana</button>
+                <button class="button btn-filtro" data-rango="1-mes">1 Mes</button>
+                <button class="button btn-filtro" data-rango="3-meses">3 Meses</button>
+                <button class="button btn-filtro" data-rango="6-meses">6 Meses</button>
+                <button class="button btn-filtro" data-rango="1-anio">1 Año</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>Resultados</h2>
+            <!-- Mensaje inicial -->
+            <p id="mensaje-reporte">Seleccione un periodo para ver el reporte.</p>
+            
+            <!-- Aquí es donde el JS dibujará la tabla -->
+            <div id="resultados-container">
+            </div>
+        </section>
+    </div>
+
+    <!-- Este es el JS que aplica el color (no necesita cambios) -->
+    <script src="js/reporte-faltas.js" type="module"></script>
+</body>
+</html>

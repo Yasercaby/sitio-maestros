@@ -1,36 +1,36 @@
-// Importar Pool en lugar de Client
-const { Pool } = require('pg');
-console.log("db.js: Cargando módulo pg..."); // Log inicial
+// MODELO/db.js (Versión corregida y mejorada)
 
-// La URL de la base de datos se leerá de una variable de entorno
-const dbUrl = process.env.DATABASE_URL;
-console.log("db.js: DATABASE_URL:", dbUrl ? "Encontrada" : "NO ENCONTRADA");
+const mysql = require('mysql');
+console.log("--- db.js (MySQL Local): Cargando módulo mysql ---");
 
-// Configuración de la conexión para el Pool
-let connectionConfig;
-if (dbUrl) {
-    connectionConfig = { connectionString: dbUrl, ssl: { rejectUnauthorized: false } };
-    console.log("db.js: Usando config de Render/Railway con SSL.");
-} else {
-    // Config local (no se usará en deploy)
-    connectionConfig = { host: 'localhost', user: 'postgres', password: 'tu_password_local', database: 'sitios_maestros', port: 5432 };
-    console.log("db.js: Usando config local.");
-}
+// Configuración para tu base de datos MySQL local en XAMPP
+const poolConfig = {
+    connectionLimit: 10, // Número de conexiones que el pool puede manejar
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'sitio_maestros' // <--- ¡AQUÍ ESTÁ EL ERROR!
+    // Reemplaza 'TU_BASE_DE_DATOS_CORRECTA' con el nombre que ves en phpMyAdmin.
+};
 
-// Crear una instancia del Pool
-let pool;
-try {
-    pool = new Pool(connectionConfig);
-    console.log("db.js: Instancia de Pool CREADA.");
-    // Verificar si tiene query AHORA MISMO
-    console.log("db.js: ¿Pool tiene query al crearse?", typeof pool.query === 'function');
+// Crear un "Pool" de conexiones en lugar de una sola conexión
+// Un Pool es más robusto: maneja reconexiones y conexiones múltiples
+const pool = mysql.createPool(poolConfig);
 
-    pool.on('error', (err) => {
-        console.error('!!!!!!!! ERROR EN POOL POSTGRESQL !!!!!!!!', err);
-    });
+// Intentamos hacer una consulta simple para verificar que todo funciona
+// pool.query maneja la conexión y la liberación automáticamente
+pool.query('SELECT 1', (err, results) => {
+    if (err) {
+        console.error('!!!!!!!! ERROR AL CONECTAR A MYSQL LOCAL !!!!!!!!');
+        console.error('Verifica que XAMPP/MySQL estén activos y el nombre de la DB sea correcto.');
+        console.error('Error:', err.code);
+        // No salimos del proceso, solo mostramos el error.
+        // El pool intentará reconectar en la siguiente consulta.
+    } else {
+        console.log('--- db.js (MySQL Local): Conexión al Pool de MySQL exitosa ---');
+    }
+});
 
-} catch (error) {
-    console.error("!!!!!!!! ERROR CRÍTICO AL CREAR POOL EN db.js !!!!!!!!");
-    console.error(error);
-    throw error; // Detener si falla la creación del Pool
-}
+// Exportamos el pool. Ahora, en lugar de connection.query(), usarás pool.query()
+console.log("--- db.js (MySQL Local): Exportando POOL de conexión... ---");
+module.exports = pool;
